@@ -5,14 +5,22 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.template.MainController">
+<AnchorPane prefHeight="510.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.template.MainController">
    <children>
-      <Pane layoutX="74.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: FFBBDA;">
+      <Pane prefHeight="510.0" prefWidth="600.0" style="-fx-background-color: FFBBDA;">
          <children>
-            <TableView fx:id="tblMaquiagem" layoutX="28.0" layoutY="228.0" prefHeight="159.0" prefWidth="452.0">
+            <ImageView fitHeight="510.0" fitWidth="366.0" layoutX="239.0" opacity="0.45" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="https://template.canva.com/EAFaqBBXe5M/1/0/1131w-gg9ErRf_P-8.jpg" />
+               </image>
+            </ImageView>
+            <TableView fx:id="tblMaquiagem" layoutX="40.0" layoutY="307.0" onMouseClicked="#carregarCampos" prefHeight="159.0" prefWidth="452.0">
               <columns>
                 <TableColumn fx:id="colID" prefWidth="75.0" style="-fx-background-color: FF8DA1;" text="ID" />
                   <TableColumn fx:id="colNome" prefWidth="75.0" style="-fx-background-color: FF8DA1;" text="Nome" />
@@ -22,21 +30,23 @@
                   <TableColumn fx:id="colQuantidade" prefWidth="75.0" style="-fx-background-color: FF8DA1;" text="Quantidade" />
               </columns>
             </TableView>
-            <Label layoutX="27.0" layoutY="22.0" text="ID" />
-            <Label layoutX="26.0" layoutY="90.0" text="Marca" />
-            <Label layoutX="28.0" layoutY="129.0" prefHeight="17.0" prefWidth="43.0" text="Cor" />
-            <Label layoutX="27.0" layoutY="167.0" text="Preco" />
-            <Label layoutX="26.0" layoutY="53.0" prefHeight="23.0" prefWidth="63.0" text="Nome" />
-            <Label layoutX="28.0" layoutY="201.0" text="Quantidade" />
-            <TextField fx:id="txtID" layoutX="107.0" layoutY="17.0" style="-fx-background-color: EEDAE5;" />
-            <TextField fx:id="txtNome" layoutX="107.0" layoutY="51.0" style="-fx-background-color: EEDAE5;" />
-            <TextField fx:id="txtMarca" layoutX="107.0" layoutY="86.0" style="-fx-background-color: EEDAE5;" />
-            <TextField fx:id="txtCor" layoutX="107.0" layoutY="124.0" style="-fx-background-color: EEDAE5;" />
-            <TextField fx:id="txtPreco" layoutX="107.0" layoutY="162.0" style="-fx-background-color: EEDAE5;" />
-            <TextField fx:id="txtQuantidade" layoutX="107.0" layoutY="196.0" style="-fx-background-color: EEDAE5;" />
-            <Button fx:id="btnEditar" layoutX="505.0" layoutY="307.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="56.0" style="-fx-background-color: FF8DA1;" text="Editar" />
-            <Button layoutX="505.0" layoutY="268.0" mnemonicParsing="false" onAction="#btnDeletar" style="-fx-background-color: FF8DA1;" text="Deletar" />
-            <Button fx:id="btnSalvar" layoutX="505.0" layoutY="227.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="56.0" style="-fx-background-color: FF8DA1;" text="Salvar" />
+            <Label layoutX="41.0" layoutY="68.0" text="ID" />
+            <Label layoutX="39.0" layoutY="143.0" text="Marca" />
+            <Label layoutX="41.0" layoutY="185.0" prefHeight="17.0" prefWidth="43.0" text="Cor" />
+            <Label layoutX="41.0" layoutY="224.0" text="Preco" />
+            <Label layoutX="39.0" layoutY="101.0" prefHeight="23.0" prefWidth="63.0" text="Nome" />
+            <Label layoutX="39.0" layoutY="262.0" text="Quantidade" />
+            <TextField fx:id="txtID" disable="true" editable="false" layoutX="117.0" layoutY="63.0" style="-fx-background-color: EEDAE5;" />
+            <TextField fx:id="txtNome" layoutX="117.0" layoutY="99.0" style="-fx-background-color: EEDAE5;" />
+            <TextField fx:id="txtMarca" layoutX="117.0" layoutY="138.0" style="-fx-background-color: EEDAE5;" />
+            <TextField fx:id="txtCor" layoutX="117.0" layoutY="180.0" style="-fx-background-color: EEDAE5;" />
+            <TextField fx:id="txtPreco" layoutX="117.0" layoutY="219.0" style="-fx-background-color: EEDAE5;" />
+            <TextField fx:id="txtQuantidade" layoutX="117.0" layoutY="258.0" style="-fx-background-color: EEDAE5;" />
+            <Button fx:id="btnEditar" layoutX="505.0" layoutY="401.0" mnemonicParsing="false" onAction="#btnEditarAction" prefHeight="26.0" prefWidth="56.0" style="-fx-background-color: FF8DA1;" text="Editar" />
+            <Button fx:id="btnDeletar" layoutX="505.0" layoutY="361.0" mnemonicParsing="false" onAction="#btnDeletarAction" style="-fx-background-color: #FF7F7F;" text="Deletar" />
+            <Button fx:id="btnSalvar" layoutX="505.0" layoutY="321.0" mnemonicParsing="false" onAction="#btnSalvarAction" prefHeight="26.0" prefWidth="56.0" style="-fx-background-color: #80EF80;" text="Salvar" />
+            <Button fx:id="bntLimpar" layoutX="506.0" layoutY="440.0" mnemonicParsing="false" onAction="#btnLimparAction" style="-fx-background-color: FF8DA1;" text="Limpar" />
+            <Text layoutX="225.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-style: Champignon;" text="CADASTRO DE MAQUIAGEM" />
          </children>
       </Pane>
    </children>
