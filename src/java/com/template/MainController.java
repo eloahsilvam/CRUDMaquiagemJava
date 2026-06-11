@@ -8,6 +8,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,6 +27,8 @@ public class MainController {
     @FXML private TextField txtPreco;
     @FXML private TextField txtQuantidade;
 
+    @FXML private Label lblMensagem;
+
     @FXML private TableView<MaquiagemDTO> tblMaquiagem;
     @FXML private TableColumn<MaquiagemDTO, Integer> colID;
     @FXML private TableColumn<MaquiagemDTO, String> colNome;
@@ -34,7 +37,7 @@ public class MainController {
     @FXML private TableColumn<MaquiagemDTO, Double> colPreco;
     @FXML private TableColumn<MaquiagemDTO, Integer> colQuantidade;
 
-    @FXML //cada fxml esta se comunicando com a view
+    @FXML
     private void carregarMaquiagem() {
         MaquiagemDAO maquiagemDao = new MaquiagemDAO();
         List<MaquiagemDTO> listarMaquiagem = maquiagemDao.listar();
@@ -51,34 +54,48 @@ public class MainController {
             txtMarca.setText(maquiagemDto.getMarca());
             txtCor.setText(maquiagemDto.getCor());
             txtPreco.setText(String.valueOf(maquiagemDto.getPreco()));
-            txtQuantidade.setText(String.valueOf(maquiagemDto.getQuantidade())); // Corrigido o nome da variável
+            txtQuantidade.setText(String.valueOf(maquiagemDto.getQuantidade()));
+
+            btnEditar.setDisable(false);
+            btnDeletar.setDisable(false);
+            lblMensagem.setText("");
         }
     }
 
     @FXML
     private void btnSalvarAction(ActionEvent event) {
+        if (txtNome.getText().trim().isEmpty() ||
+                txtMarca.getText().trim().isEmpty() ||
+                txtPreco.getText().trim().isEmpty() ||
+                txtQuantidade.getText().trim().isEmpty()) {
+
+            lblMensagem.setText("Aviso: Preencha todos os campos obrigatórios (Nome, Marca, Preço e Qtd)!");
+            return;
+        }
+
         try {
-            String nome = txtNome.getText();
-            String marca = txtMarca.getText();
-            String cor = txtCor.getText();
-            double preco = Double.parseDouble(txtPreco.getText());
-            int quantidade = Integer.parseInt(txtQuantidade.getText());
-
             MaquiagemDTO maquiagemDto = new MaquiagemDTO();
-            maquiagemDto.setNome(nome);
-            maquiagemDto.setMarca(marca);
-            maquiagemDto.setCor(cor);
-            maquiagemDto.setPreco(preco);
-            maquiagemDto.setQuantidade(quantidade);
 
+            maquiagemDto.setNome(txtNome.getText());
+            maquiagemDto.setMarca(txtMarca.getText());
+            maquiagemDto.setCor(txtCor.getText());
+            maquiagemDto.setPreco(Double.parseDouble(txtPreco.getText()));
+            maquiagemDto.setQuantidade(Integer.parseInt(txtQuantidade.getText()));
             MaquiagemDAO maquiagemDao = new MaquiagemDAO();
+
             maquiagemDao.cadastrarMaquiagem(maquiagemDto);
 
             carregarMaquiagem();
             btnLimparAction(null);
-            logger.log(Level.INFO, "Salvo com sucesso!");
 
+            lblMensagem.setText("Maquiagem cadastrada com sucesso!");
+
+            txtNome.requestFocus();
+
+        } catch (NumberFormatException e) {
+            lblMensagem.setText("Erro: Preço e Quantidade devem conter apenas números válidos.");
         } catch (Exception e) {
+            lblMensagem.setText("Erro ao salvar o registro. Verifique os dados.");
             logger.log(Level.SEVERE, "Erro ao salvar.", e);
         }
     }
@@ -88,11 +105,19 @@ public class MainController {
         MaquiagemDTO maquiagemSelecionada = tblMaquiagem.getSelectionModel().getSelectedItem();
 
         if (maquiagemSelecionada != null) {
+            if (txtNome.getText().trim().isEmpty() ||
+                    txtMarca.getText().trim().isEmpty() ||
+                    txtPreco.getText().trim().isEmpty() ||
+                    txtQuantidade.getText().trim().isEmpty()) {
+
+                lblMensagem.setText("Aviso: Não é possível editar deixando campos vazios!");
+                return;
+            }
+
             try {
                 MaquiagemDTO maquiagemdto = new MaquiagemDTO();
 
                 maquiagemdto.setId(maquiagemSelecionada.getId());
-
                 maquiagemdto.setNome(txtNome.getText());
                 maquiagemdto.setMarca(txtMarca.getText());
                 maquiagemdto.setCor(txtCor.getText());
@@ -104,9 +129,13 @@ public class MainController {
 
                 carregarMaquiagem();
                 btnLimparAction(null);
-                logger.log(Level.INFO, "Editado com sucesso!");
 
+                lblMensagem.setText("Maquiagem atualizada com sucesso!");
+
+            } catch (NumberFormatException e) {
+                lblMensagem.setText("Erro: Preço e Quantidade devem conter apenas números.");
             } catch (Exception e) {
+                lblMensagem.setText("Erro ao atualizar o registro.");
                 logger.log(Level.SEVERE, "Erro ao editar", e);
             }
         }
@@ -117,14 +146,21 @@ public class MainController {
         MaquiagemDTO maquiagemSelecionada = tblMaquiagem.getSelectionModel().getSelectedItem();
 
         if (maquiagemSelecionada != null) {
-            MaquiagemDAO maquiagemDao = new MaquiagemDAO();
-            maquiagemDao.excluir(maquiagemSelecionada.getId());
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmação de Exclusão");
+            alert.setHeaderText(null);
+            alert.setContentText("Deseja realmente excluir a maquiagem: " + maquiagemSelecionada.getNome() + "?");
 
-            carregarMaquiagem();
-            btnLimparAction(null);
-            logger.log(Level.INFO, "Excluído com sucesso!");
-        } else {
-            logger.log(Level.WARNING, "Maquiagem nao selecionada.");
+            Optional<ButtonType> resultado = alert.showAndWait();
+            if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+                MaquiagemDAO maquiagemDao = new MaquiagemDAO();
+                maquiagemDao.excluir(maquiagemSelecionada.getId());
+
+                carregarMaquiagem();
+                btnLimparAction(null);
+
+                lblMensagem.setText("Registro excluído com sucesso!");
+            }
         }
     }
 
@@ -136,6 +172,13 @@ public class MainController {
         txtCor.clear();
         txtPreco.clear();
         txtQuantidade.clear();
+
+        btnEditar.setDisable(true);
+        btnDeletar.setDisable(true);
+        if (event != null) {
+            lblMensagem.setText("");
+        }
+        txtNome.requestFocus();
     }
 
     @FXML
@@ -149,8 +192,21 @@ public class MainController {
         colPreco.setCellValueFactory(new PropertyValueFactory<>("preco"));
         colQuantidade.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
 
+        txtNome.setPromptText("Ex: Batom Matte");
+        txtMarca.setPromptText("Ex: Ruby Rose");
+        txtCor.setPromptText("Ex: Vermelho");
+        txtPreco.setPromptText("Ex: 29.90");
+        txtQuantidade.setPromptText("Ex: 10");
+
+        txtID.setEditable(false);
+        txtID.setDisable(true);
+
+        btnEditar.setDisable(true);
+        btnDeletar.setDisable(true);
+
         carregarMaquiagem();
-        tblMaquiagem.getSelectionModel().selectedItemProperty().addListener((obs, antigo, novoSelecionado) -> {
+
+        tblMaquiagem.getSelectionModel().selectedItemProperty().addListener((obs, antigo,定位) -> {
             carregarCampos();
         });
     }
