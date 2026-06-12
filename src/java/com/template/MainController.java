@@ -69,7 +69,7 @@ public class MainController {
                 txtPreco.getText().trim().isEmpty() ||
                 txtQuantidade.getText().trim().isEmpty()) {
 
-            lblMensagem.setText("Aviso: Preencha todos os campos obrigatórios (Nome, Marca, Preço e Qtd)!");
+            lblMensagem.setText("Aviso:Preencha todos os campos!");
             return;
         }
 
@@ -88,14 +88,14 @@ public class MainController {
             carregarMaquiagem();
             btnLimparAction(null);
 
-            lblMensagem.setText("Maquiagem cadastrada com sucesso!");
+            lblMensagem.setText("Maquiagem cadastrada!");
 
             txtNome.requestFocus();
 
         } catch (NumberFormatException e) {
-            lblMensagem.setText("Erro: Preço e Quantidade devem conter apenas números válidos.");
+            lblMensagem.setText("Erro: números inválidos.");
         } catch (Exception e) {
-            lblMensagem.setText("Erro ao salvar o registro. Verifique os dados.");
+            lblMensagem.setText("Erro ao salvar o registro.");
             logger.log(Level.SEVERE, "Erro ao salvar.", e);
         }
     }
@@ -110,7 +110,7 @@ public class MainController {
                     txtPreco.getText().trim().isEmpty() ||
                     txtQuantidade.getText().trim().isEmpty()) {
 
-                lblMensagem.setText("Aviso: Não é possível editar deixando campos vazios!");
+                lblMensagem.setText("Aviso:Não é possível editar");
                 return;
             }
 
@@ -130,12 +130,12 @@ public class MainController {
                 carregarMaquiagem();
                 btnLimparAction(null);
 
-                lblMensagem.setText("Maquiagem atualizada com sucesso!");
+                lblMensagem.setText("Maquiagem atualizada!");
 
             } catch (NumberFormatException e) {
-                lblMensagem.setText("Erro: Preço e Quantidade devem conter apenas números.");
+                lblMensagem.setText("Erro:use apenas nímeros.");
             } catch (Exception e) {
-                lblMensagem.setText("Erro ao atualizar o registro.");
+                lblMensagem.setText("Erro ao atualizar");
                 logger.log(Level.SEVERE, "Erro ao editar", e);
             }
         }
@@ -158,8 +158,7 @@ public class MainController {
 
                 carregarMaquiagem();
                 btnLimparAction(null);
-
-                lblMensagem.setText("Registro excluído com sucesso!");
+                lblMensagem.setText("Registro excluído!");
             }
         }
     }
