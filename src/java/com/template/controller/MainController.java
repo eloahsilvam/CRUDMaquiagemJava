@@ -1,16 +1,19 @@
-package com.template;
+package com.template.controller;
 
+import com.template.model.dao.MaquiagemDAO;
+import com.template.model.dto.MaquiagemDTO;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static com.template.util.DialogUtil.exibirConfirmacao;
 
 public class MainController {
     private static final Logger logger = Logger.getLogger(MaquiagemDAO.class.getName());
@@ -146,13 +149,10 @@ public class MainController {
         MaquiagemDTO maquiagemSelecionada = tblMaquiagem.getSelectionModel().getSelectedItem();
 
         if (maquiagemSelecionada != null) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmação de Exclusão");
-            alert.setHeaderText(null);
-            alert.setContentText("Deseja realmente excluir a maquiagem: " + maquiagemSelecionada.getNome() + "?");
+            boolean confirmado = exibirConfirmacao("Confirmação de Exclusão",
+                    "Deseja realmente excluir a maquiagem: " + maquiagemSelecionada.getNome() + "?");
 
-            Optional<ButtonType> resultado = alert.showAndWait();
-            if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+            if (confirmado) {
                 MaquiagemDAO maquiagemDao = new MaquiagemDAO();
                 maquiagemDao.excluir(maquiagemSelecionada.getId());
 
@@ -162,6 +162,7 @@ public class MainController {
             }
         }
     }
+
 
     @FXML
     private void btnLimparAction(ActionEvent event) {

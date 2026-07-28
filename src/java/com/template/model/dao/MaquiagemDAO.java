@@ -1,5 +1,8 @@
-package com.template;
+package com.template.model.dao;
 
+
+import com.template.model.Conexao;
+import com.template.model.dto.MaquiagemDTO;
 
 import java.sql.*;
 import java.util.ArrayList;
