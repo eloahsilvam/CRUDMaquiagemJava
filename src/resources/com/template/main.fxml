@@ -20,7 +20,7 @@
                   <Image url="https://template.canva.com/EAFaqBBXe5M/1/0/1131w-gg9ErRf_P-8.jpg" />
                </image>
             </ImageView>
-            <TableView fx:id="tblMaquiagem" layoutX="40.0" layoutY="307.0" onMouseClicked="#carregarCampos" prefHeight="159.0" prefWidth="452.0">
+            <TableView fx:id="tblMaquiagem" layoutX="40.0" layoutY="307.0" prefHeight="159.0" prefWidth="452.0">
               <columns>
                 <TableColumn fx:id="colID" prefWidth="75.0" style="-fx-background-color: FF8DA1;" text="ID" />
                   <TableColumn fx:id="colNome" prefWidth="75.0" style="-fx-background-color: FF8DA1;" text="Nome" />
