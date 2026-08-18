@@ -6,6 +6,7 @@ import javafx.scene.control.TextField;
 
 public class FormUtil {
     public static void limparCampos(TableView<?> tabela, TextField... campos) {
+
         if (campos != null) {
             for (TextField campo : campos) {
                 if (campo != null) {
@@ -13,39 +14,64 @@ public class FormUtil {
                 }
             }
         }
+
         if (tabela != null && tabela.getSelectionModel() != null) {
             tabela.getSelectionModel().clearSelection();
         }
     }
 
-    public static MaquiagemDTO extrairDTO(TextField txtNome, TextField txtMarca, TextField txtCor, TextField txtPreco, TextField txtQuantidade) {
-        MaquiagemDTO dto = new MaquiagemDTO();
-        dto.setNome(txtNome.getText());
-        dto.setMarca(txtMarca.getText());
-        dto.setCor(txtCor.getText());
+    public static MaquiagemDTO extrairMaquiagem(
+            TextField txtNome,
+            TextField txtMarca,
+            TextField txtCor,
+            TextField txtPreco,
+            TextField txtQuantidade) {
+
+        MaquiagemDTO maquiagem = new MaquiagemDTO();
+
+        maquiagem.setNome(txtNome.getText());
+        maquiagem.setMarca(txtMarca.getText());
+        maquiagem.setCor(txtCor.getText());
 
         try {
-            dto.setPreco(Double.parseDouble(txtPreco.getText().trim().replace(",", ".")));
-        } catch (Exception e) {
-            dto.setPreco(null);
+            maquiagem.setPreco(
+                    Double.parseDouble(
+                            txtPreco.getText().trim().replace(",", ".")
+                    )
+            );
+        } catch (Exception erro) {
+            maquiagem.setPreco(null);
         }
 
         try {
-            dto.setQuantidade(Integer.parseInt(txtQuantidade.getText().trim()));
-        } catch (Exception e) {
-            dto.setQuantidade(-1);
+            maquiagem.setQuantidade(
+                    Integer.parseInt(txtQuantidade.getText().trim())
+            );
+        } catch (Exception erro) {
+            maquiagem.setQuantidade(-1);
         }
 
-        return dto;
+        return maquiagem;
     }
 
-    public static void preencherCampos(MaquiagemDTO dto, TextField txtNome, TextField txtMarca, TextField txtCor, TextField txtPreco, TextField txtQuantidade) {
-        if (dto != null) {
-            txtNome.setText(dto.getNome() != null ? dto.getNome() : "");
-            txtMarca.setText(dto.getMarca() != null ? dto.getMarca() : "");
-            txtCor.setText(dto.getCor() != null ? dto.getCor() : "");
-            txtPreco.setText(dto.getPreco() != null ? String.valueOf(dto.getPreco()) : "");
-            txtQuantidade.setText(dto.getQuantidade() >= 0 ? String.valueOf(dto.getQuantidade()) : "");
+    public static void preencherCampos(
+            MaquiagemDTO maquiagem,
+            TextField txtNome,
+            TextField txtMarca,
+            TextField txtCor,
+            TextField txtPreco,
+            TextField txtQuantidade) {
+
+        if (maquiagem != null) {
+            txtNome.setText(maquiagem.getNome() != null ? maquiagem.getNome() : "");
+            txtMarca.setText(maquiagem.getMarca() != null ? maquiagem.getMarca() : "");
+            txtCor.setText(maquiagem.getCor() != null ? maquiagem.getCor() : "");
+            txtPreco.setText(maquiagem.getPreco() != null
+                    ? String.valueOf(maquiagem.getPreco())
+                    : "");
+            txtQuantidade.setText(maquiagem.getQuantidade() >= 0
+                    ? String.valueOf(maquiagem.getQuantidade())
+                    : "");
         }
     }
 }
