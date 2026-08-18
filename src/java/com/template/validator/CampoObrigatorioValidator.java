@@ -25,25 +25,3 @@ public class CampoObrigatorioValidator implements Validador<String>{
     }
 }
 
-class NaoNumeroValidador implements Validador<String> {
-    private final String valor;
-
-    public NaoNumeroValidador(String valor) {
-        this.valor = valor;
-    }
-
-    @Override
-    public boolean validar(String valorAtual) {
-        return this.valor != null && !this.valor.matches(".*\\d.*");
-    }
-
-    @Override
-    public String getMesagemErro() {
-        return "O campo deve ser preenchido.";
-    }
-
-    @Override
-    public String getValor() {
-        return valor;
-    }
-}
