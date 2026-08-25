@@ -5,3 +5,4 @@ public interface Validador <T>{
     String getMesagemErro();
     T getValor();
 }
+

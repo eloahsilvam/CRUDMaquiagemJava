@@ -13,13 +13,14 @@ public class QuantidadeValidador implements Validador<String> {
 
     @Override
     public boolean validar(String valorAtual) {
-        return this.quantidade != null && pattern.matcher(this.quantidade).matches();
+        return valorAtual != null && pattern.matcher(valorAtual).matches();
     }
 
     @Override
     public String getMesagemErro() {
         return "Digite uma quantidade válida!";
     }
+
 
     @Override
     public String getValor() {
