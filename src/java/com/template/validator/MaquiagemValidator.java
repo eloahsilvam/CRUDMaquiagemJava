@@ -4,7 +4,7 @@ import com.template.model.dto.MaquiagemDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MaquiagemValidator {
+public class MaquiagemValidator implements IMaquiagemValidator{
 
     public List<String> validar(MaquiagemDTO dto) {
         List<String> erros = new ArrayList<>();
@@ -21,10 +21,10 @@ public class MaquiagemValidator {
         validadores.add(new CampoObrigatorioValidator("Marca", dto.getMarca()));
         validadores.add(new CampoObrigatorioValidator("Cor", dto.getCor()));
 
-        // Converte a quantidade Integer para String para o seu QuantidadeValidador aceitar
+        // Converte a quantidade Integer para String para o QuantidadeValidador aceitar
         validadores.add(new QuantidadeValidador(String.valueOf(dto.getQuantidade())));
 
-        // Loop de validação sequencial (estilo imagem original)
+        // Loop de validação sequencial
         for (Validador validador : validadores) {
             if (!validador.validar(validador.getValor())) {
                 erros.add(validador.getMesagemErro());
@@ -32,7 +32,7 @@ public class MaquiagemValidator {
             }
         }
 
-        // Validação do preço (caso ainda não tenha uma classe PrecoValidador)
+        // Validação do preço
         if (erros.isEmpty()) {
             if (dto.getPreco() == null || dto.getPreco() <= 0) {
                 erros.add("Informe um preço válido maior que zero.");
@@ -40,5 +40,30 @@ public class MaquiagemValidator {
         }
 
         return erros;
+    }
+
+    @Override
+    public boolean validarMaquiagem(String nome, String marca, String cor, boolean preco, boolean quantidade) {
+        return false;
+    }
+
+    @Override
+    public boolean validarMarca(String marca) {
+        return false;
+    }
+
+    @Override
+    public boolean validarCor(String cor) {
+        return false;
+    }
+
+    @Override
+    public boolean validarPreco(boolean preco) {
+        return false;
+    }
+
+    @Override
+    public boolean validarQuantidade(boolean quantidade) {
+        return false;
     }
 }
